@@ -74,7 +74,7 @@
     padding:3.5rem 0 2.5rem;
     border-bottom:1px solid var(--line);
   }
-  .hero-inner{display:grid; grid-template-columns:1.1fr .9fr; gap:2.5rem; align-items:center;}
+  .hero-inner{max-width:56ch;}
   .eyebrow{
     font-family:'JetBrains Mono',monospace; font-size:.72rem; letter-spacing:.18em;
     text-transform:uppercase; color:var(--volt); margin:0 0 .9rem;
@@ -88,39 +88,6 @@
     padding-top:.9rem;
   }
   .stat-strip strong{color:var(--volt); font-size:1.1rem; display:block; font-family:'Bebas Neue',sans-serif;}
-
-  .bodymap-panel{
-    display:flex; flex-direction:column; align-items:center; gap:.7rem;
-    background:rgba(20,22,26,.6); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
-    border:1px solid var(--line); border-radius:20px; padding:1.4rem 1.2rem;
-  }
-  .view-toggle{display:flex; gap:.4rem; background:rgba(255,255,255,.06); border-radius:999px; padding:.25rem;}
-  .view-toggle label{
-    padding:.35rem 1rem; border-radius:999px; cursor:pointer; font-size:.78rem;
-    letter-spacing:.05em; text-transform:uppercase; font-weight:700; color:var(--text-dim);
-    transition:background .15s, color .15s;
-  }
-  #view-front:checked ~ .view-toggle label[for="view-front"],
-  #view-back:checked ~ .view-toggle label[for="view-back"]{ background:var(--volt); color:var(--bg); }
-  .bodymap-wrap{width:min(230px, 60vw);}
-  .bodymap{width:100%; height:auto; display:block;}
-  .silhouette-base{ fill:rgba(244,245,241,.07); stroke:rgba(244,245,241,.3); stroke-width:2; }
-  .view.back-view{ display:none; }
-  #view-back:checked ~ .bodymap-wrap .front-view{ display:none; }
-  #view-back:checked ~ .bodymap-wrap .back-view{ display:block; }
-  .region path{
-    fill:rgba(244,245,241,.12); stroke:rgba(244,245,241,.4); stroke-width:1.5;
-    transition:fill .15s, filter .15s; cursor:pointer;
-  }
-  .region:hover path, .region:focus path{ fill:var(--volt); stroke:var(--volt); filter:drop-shadow(0 0 10px rgba(198,255,77,.6)); }
-  .map-hint{font-size:.78rem; color:var(--text-dim); text-align:center; max-width:22ch;}
-  .legend-row{display:flex; flex-wrap:wrap; gap:.4rem; justify-content:center;}
-  .legend-row a{
-    font-size:.72rem; font-family:'JetBrains Mono',monospace; text-transform:uppercase;
-    letter-spacing:.04em; padding:.3rem .6rem; border:1px solid var(--line-strong);
-    border-radius:999px; text-decoration:none; color:var(--text-dim);
-  }
-  .legend-row a:hover{ border-color:var(--volt); color:var(--volt); }
 
   /* ============ STICKY CONTROLS ============ */
   .controls{
@@ -322,10 +289,6 @@
 
   footer{ background:var(--bg); color:var(--text-dim); padding:1.6rem 0; font-size:.8rem; text-align:center; border-top:1px solid var(--line); }
 
-  @media (max-width:860px){
-    .hero-inner{ grid-template-columns:1fr; }
-    .bodymap-wrap{ width:min(220px,70vw); }
-  }
   @media (max-width:640px){
     .controls-row{ flex-direction:column; align-items:flex-start; gap:.7rem; }
     fieldset.filter{ flex-wrap:wrap; }
@@ -372,64 +335,6 @@
         <div><strong>3</strong>objetivos</div>
         <div><strong>2</strong>ambientes: casa e academia</div>
       </div>
-    </div>
-
-    <div class="bodymap-panel">
-      <input type="radio" name="view" id="view-front" class="visually-hidden" checked>
-      <input type="radio" name="view" id="view-back" class="visually-hidden">
-      <div class="view-toggle">
-        <label for="view-front">Frente</label>
-        <label for="view-back">Verso</label>
-      </div>
-      <div class="bodymap-wrap">
-        <svg class="bodymap" viewBox="0 0 240 520" role="img" aria-label="Mapa muscular do corpo humano, frente e verso. Toque em uma região para ir até a seção correspondente.">
-          <g class="view front-view">
-            <ellipse class="silhouette-base" cx="120" cy="42" rx="24" ry="28"/>
-            <rect class="silhouette-base" x="108" y="66" width="24" height="16"/>
-            <rect class="silhouette-base" x="80" y="90" width="80" height="150" rx="30"/>
-            <rect class="silhouette-base" x="50" y="95" width="22" height="170" rx="11"/>
-            <rect class="silhouette-base" x="168" y="95" width="22" height="170" rx="11"/>
-            <rect class="silhouette-base" x="85" y="235" width="30" height="190" rx="14"/>
-            <rect class="silhouette-base" x="125" y="235" width="30" height="190" rx="14"/>
-            <ellipse class="silhouette-base" cx="100" cy="505" rx="18" ry="8"/>
-            <ellipse class="silhouette-base" cx="140" cy="505" rx="18" ry="8"/>
-
-            <a href="#ombros" class="region"><title>Ombros</title><ellipse cx="95" cy="100" rx="20" ry="16"/></a>
-            <a href="#ombros" class="region"><title>Ombros</title><ellipse cx="145" cy="100" rx="20" ry="16"/></a>
-            <a href="#peito" class="region"><title>Peito</title><rect x="88" y="100" width="64" height="45" rx="14"/></a>
-            <a href="#bracos" class="region"><title>Braços</title><rect x="52" y="112" width="18" height="58" rx="9"/></a>
-            <a href="#bracos" class="region"><title>Braços</title><rect x="170" y="112" width="18" height="58" rx="9"/></a>
-            <a href="#core" class="region"><title>Core / Abdômen</title><rect x="92" y="155" width="56" height="60" rx="12"/></a>
-            <a href="#pernas" class="region"><title>Pernas</title><rect x="87" y="245" width="26" height="100" rx="12"/></a>
-            <a href="#pernas" class="region"><title>Pernas</title><rect x="127" y="245" width="26" height="100" rx="12"/></a>
-          </g>
-          <g class="view back-view">
-            <ellipse class="silhouette-base" cx="120" cy="42" rx="24" ry="28"/>
-            <rect class="silhouette-base" x="108" y="66" width="24" height="16"/>
-            <rect class="silhouette-base" x="80" y="90" width="80" height="150" rx="30"/>
-            <rect class="silhouette-base" x="50" y="95" width="22" height="170" rx="11"/>
-            <rect class="silhouette-base" x="168" y="95" width="22" height="170" rx="11"/>
-            <rect class="silhouette-base" x="85" y="235" width="30" height="190" rx="14"/>
-            <rect class="silhouette-base" x="125" y="235" width="30" height="190" rx="14"/>
-            <ellipse class="silhouette-base" cx="100" cy="505" rx="18" ry="8"/>
-            <ellipse class="silhouette-base" cx="140" cy="505" rx="18" ry="8"/>
-
-            <a href="#ombros" class="region"><title>Ombros (posterior)</title><ellipse cx="95" cy="100" rx="20" ry="16"/></a>
-            <a href="#ombros" class="region"><title>Ombros (posterior)</title><ellipse cx="145" cy="100" rx="20" ry="16"/></a>
-            <a href="#costas" class="region"><title>Costas</title><rect x="86" y="98" width="68" height="80" rx="14"/></a>
-            <a href="#bracos" class="region"><title>Braços (tríceps)</title><rect x="52" y="112" width="18" height="58" rx="9"/></a>
-            <a href="#bracos" class="region"><title>Braços (tríceps)</title><rect x="170" y="112" width="18" height="58" rx="9"/></a>
-            <a href="#pernas" class="region"><title>Glúteos</title><rect x="85" y="222" width="70" height="38" rx="18"/></a>
-            <a href="#pernas" class="region"><title>Posterior de coxa</title><rect x="87" y="255" width="26" height="90" rx="12"/></a>
-            <a href="#pernas" class="region"><title>Posterior de coxa</title><rect x="127" y="255" width="26" height="90" rx="12"/></a>
-          </g>
-        </svg>
-      </div>
-      <p class="map-hint">Toque em uma região do corpo, ou use os atalhos abaixo.</p>
-      <nav class="legend-row" aria-label="Atalhos por grupo muscular">
-        <a href="#peito">Peito</a><a href="#costas">Costas</a><a href="#ombros">Ombros</a>
-        <a href="#bracos">Braços</a><a href="#pernas">Pernas</a><a href="#core">Core</a>
-      </nav>
     </div>
   </div>
 </header>
