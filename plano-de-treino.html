@@ -1,0 +1,1062 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plano de Treino — Casa &amp; Academia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* ============ TOKENS ============ */
+  :root{
+    --bg:#14161a;
+    --surface:#1c1f24;
+    --surface-2:#262a30;
+    --line:rgba(255,255,255,.10);
+    --line-strong:rgba(255,255,255,.20);
+    --text:#f4f5f1;
+    --text-dim:#9ba1a8;
+    --volt:#c6ff4d;
+    --coral:#ff5468;
+    --cyan:#33d6c0;
+    --amber:#ffb13d;
+    --violet:#9b7bff;
+    --maxw:1160px;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Manrope',system-ui,sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Bebas Neue',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+    font-weight:400;
+    line-height:1.02;
+    margin:0;
+  }
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit;}
+  .visually-hidden{
+    position:absolute; width:1px; height:1px; overflow:hidden;
+    clip:rect(0 0 0 0); white-space:nowrap; border:0; padding:0; margin:-1px;
+  }
+  a:focus-visible, label:focus-within, button:focus-visible, summary:focus-visible, input:focus-visible{
+    outline:3px solid var(--volt); outline-offset:2px; border-radius:4px;
+  }
+  .region a:focus-visible{ outline: 2px solid var(--volt); outline-offset:1px; }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 1.5rem;}
+  .skip-link{
+    position:absolute; left:-999px; top:0; background:var(--volt); color:var(--bg);
+    padding:.6rem 1rem; z-index:100; font-weight:700;
+  }
+  .skip-link:focus{ left:1rem; top:1rem; }
+
+  /* ============ HERO ============ */
+  .hero{
+    background:
+      radial-gradient(ellipse 900px 500px at 12% -10%, rgba(198,255,77,.16), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 0%, rgba(255,84,104,.12), transparent 55%),
+      repeating-linear-gradient(115deg, rgba(255,255,255,.035) 0 2px, transparent 2px 26px),
+      linear-gradient(100deg, rgba(20,22,26,.95) 0%, rgba(20,22,26,.75) 32%, rgba(20,22,26,.4) 58%, rgba(20,22,26,.18) 78%, rgba(20,22,26,.35) 100%),
+      url("imagens geradas/hero-dark-gym-neon-v2.jpg") center 30%/cover no-repeat,
+      var(--bg);
+    color:var(--text); position:relative; overflow:hidden;
+    padding:3.5rem 0 2.5rem;
+    border-bottom:1px solid var(--line);
+  }
+  .hero-inner{display:grid; grid-template-columns:1.1fr .9fr; gap:2.5rem; align-items:center;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace; font-size:.72rem; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--volt); margin:0 0 .9rem;
+  }
+  .hero h1{font-size:clamp(2.6rem, 6vw, 4.6rem); color:var(--text);}
+  .hero h1 span{color:var(--volt);}
+  .hero p.lede{max-width:36ch; margin:1.1rem 0 1.4rem; font-size:1.05rem; color:var(--text-dim);}
+  .stat-strip{
+    display:flex; gap:1.4rem; flex-wrap:wrap; font-family:'JetBrains Mono',monospace;
+    font-size:.82rem; color:var(--text-dim); border-top:1px solid var(--line);
+    padding-top:.9rem;
+  }
+  .stat-strip strong{color:var(--volt); font-size:1.1rem; display:block; font-family:'Bebas Neue',sans-serif;}
+
+  .bodymap-panel{
+    display:flex; flex-direction:column; align-items:center; gap:.7rem;
+    background:rgba(20,22,26,.6); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+    border:1px solid var(--line); border-radius:20px; padding:1.4rem 1.2rem;
+  }
+  .view-toggle{display:flex; gap:.4rem; background:rgba(255,255,255,.06); border-radius:999px; padding:.25rem;}
+  .view-toggle label{
+    padding:.35rem 1rem; border-radius:999px; cursor:pointer; font-size:.78rem;
+    letter-spacing:.05em; text-transform:uppercase; font-weight:700; color:var(--text-dim);
+    transition:background .15s, color .15s;
+  }
+  #view-front:checked ~ .view-toggle label[for="view-front"],
+  #view-back:checked ~ .view-toggle label[for="view-back"]{ background:var(--volt); color:var(--bg); }
+  .bodymap-wrap{width:min(230px, 60vw);}
+  .bodymap{width:100%; height:auto; display:block;}
+  .silhouette-base{ fill:rgba(244,245,241,.07); stroke:rgba(244,245,241,.3); stroke-width:2; }
+  .view.back-view{ display:none; }
+  #view-back:checked ~ .bodymap-wrap .front-view{ display:none; }
+  #view-back:checked ~ .bodymap-wrap .back-view{ display:block; }
+  .region path{
+    fill:rgba(244,245,241,.12); stroke:rgba(244,245,241,.4); stroke-width:1.5;
+    transition:fill .15s, filter .15s; cursor:pointer;
+  }
+  .region:hover path, .region:focus path{ fill:var(--volt); stroke:var(--volt); filter:drop-shadow(0 0 10px rgba(198,255,77,.6)); }
+  .map-hint{font-size:.78rem; color:var(--text-dim); text-align:center; max-width:22ch;}
+  .legend-row{display:flex; flex-wrap:wrap; gap:.4rem; justify-content:center;}
+  .legend-row a{
+    font-size:.72rem; font-family:'JetBrains Mono',monospace; text-transform:uppercase;
+    letter-spacing:.04em; padding:.3rem .6rem; border:1px solid var(--line-strong);
+    border-radius:999px; text-decoration:none; color:var(--text-dim);
+  }
+  .legend-row a:hover{ border-color:var(--volt); color:var(--volt); }
+
+  /* ============ STICKY CONTROLS ============ */
+  .controls{
+    position:sticky; top:0; z-index:30; background:var(--surface); border-bottom:1px solid var(--line);
+    box-shadow:0 4px 16px rgba(0,0,0,.35);
+  }
+  .controls-row{ display:flex; align-items:center; gap:1.4rem; flex-wrap:wrap; padding:.65rem 1.5rem; max-width:var(--maxw); margin:0 auto; }
+  fieldset.filter{ border:0; margin:0; padding:0; display:flex; align-items:center; gap:.5rem; }
+  fieldset.filter legend{
+    font-family:'JetBrains Mono',monospace; font-size:.68rem; text-transform:uppercase; letter-spacing:.1em;
+    color:var(--text-dim); padding:0; margin-right:.3rem; float:left;
+  }
+  .pillgroup{ display:flex; gap:.35rem; flex-wrap:wrap; }
+  .pillgroup label{
+    font-size:.78rem; padding:.32rem .7rem; border-radius:999px; border:1px solid var(--line-strong);
+    cursor:pointer; font-weight:700; white-space:nowrap; color:var(--text);
+    transition:background .15s,color .15s,border-color .15s;
+  }
+  body:has(#lvl-todos:checked) label[for="lvl-todos"],
+  body:has(#lvl-iniciante:checked) label[for="lvl-iniciante"],
+  body:has(#lvl-intermediario:checked) label[for="lvl-intermediario"],
+  body:has(#lvl-avancado:checked) label[for="lvl-avancado"],
+  body:has(#loc-ambos:checked) label[for="loc-ambos"],
+  body:has(#loc-casa:checked) label[for="loc-casa"],
+  body:has(#loc-academia:checked) label[for="loc-academia"],
+  body:has(#obj-geral:checked) label[for="obj-geral"],
+  body:has(#obj-hipertrofia:checked) label[for="obj-hipertrofia"],
+  body:has(#obj-perda:checked) label[for="obj-perda"],
+  body:has(#obj-qualidade:checked) label[for="obj-qualidade"]{
+    background:var(--volt); color:var(--bg); border-color:var(--volt);
+  }
+  .chipnav{ display:flex; gap:.4rem; overflow-x:auto; padding:.5rem 1.5rem .8rem; max-width:var(--maxw); margin:0 auto; }
+  .chipnav a{
+    font-family:'JetBrains Mono',monospace; font-size:.72rem; text-transform:uppercase; letter-spacing:.05em;
+    text-decoration:none; padding:.3rem .7rem; border:1px solid var(--line-strong); border-radius:999px;
+    white-space:nowrap; color:var(--text-dim);
+  }
+  .chipnav a:hover{ border-color:var(--volt); color:var(--volt); }
+
+  /* ============ FILTERING LOGIC (pure CSS) ============ */
+  body:has(#lvl-iniciante:checked) .exercise-card:not(.lvl-iniciante){ display:none; }
+  body:has(#lvl-intermediario:checked) .exercise-card:not(.lvl-intermediario){ display:none; }
+  body:has(#lvl-avancado:checked) .exercise-card:not(.lvl-avancado){ display:none; }
+  body:has(#loc-casa:checked) .exercise-card:not(.loc-casa){ display:none; }
+  body:has(#loc-academia:checked) .exercise-card:not(.loc-academia){ display:none; }
+  body:has(#lvl-iniciante:checked) .col-inic{ color:var(--coral); font-weight:700; }
+  body:has(#lvl-intermediario:checked) .col-inter{ color:var(--coral); font-weight:700; }
+  body:has(#lvl-avancado:checked) .col-avan{ color:var(--coral); font-weight:700; }
+
+  /* once a location is chosen, stop showing the other location's badge/description —
+     picking it once should be enough, not asked again on every card */
+  body:has(#loc-casa:checked) .tag.loc-academia{ display:none; }
+  body:has(#loc-academia:checked) .tag.loc-casa{ display:none; }
+  .ex-desc-variant{ margin:.8rem 0; font-size:.94rem; }
+  .ex-desc-variant .loc-tag-label{
+    font-family:'JetBrains Mono',monospace; font-size:.66rem; text-transform:uppercase;
+    letter-spacing:.05em; color:var(--text-dim); display:block; margin-bottom:.2rem;
+  }
+  body:has(#loc-casa:checked) .ex-desc-variant.desc-academia{ display:none; }
+  body:has(#loc-academia:checked) .ex-desc-variant.desc-casa{ display:none; }
+
+  /* objetivo: scheme banner + diet panels share the same radios */
+  .scheme-wrap{ background:var(--surface); border-bottom:1px solid var(--line); }
+  .scheme-wrap .wrap{ padding:.9rem 1.5rem; }
+  .scheme-block{ display:none; }
+  .scheme-block p{ margin:.3rem 0; font-size:.92rem; }
+  .scheme-title{ color:var(--volt); font-size:.75rem; letter-spacing:.08em; margin-bottom:.4rem; }
+  body:has(#obj-geral:checked) .scheme-geral{ display:block; }
+  body:has(#obj-hipertrofia:checked) .scheme-hipertrofia{ display:block; }
+  body:has(#obj-perda:checked) .scheme-perda{ display:block; }
+  body:has(#obj-qualidade:checked) .scheme-qualidade{ display:block; }
+  body:has(#obj-hipertrofia:checked) .diet-panel:not(.diet-hipertrofia){ display:none; }
+  body:has(#obj-perda:checked) .diet-panel:not(.diet-perda){ display:none; }
+  body:has(#obj-qualidade:checked) .diet-panel:not(.diet-qualidade){ display:none; }
+
+  /* inline glossary tooltip — definitions appear where the term is used */
+  .term{ position:relative; border-bottom:1px dotted var(--amber); font-weight:700; cursor:help; }
+  .term .tip{
+    position:absolute; left:0; bottom:calc(100% + 8px); width:220px; background:#0c0d0f; color:var(--text);
+    font-size:.78rem; line-height:1.4; padding:.55rem .7rem; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,.5);
+    border:1px solid var(--line-strong);
+    opacity:0; visibility:hidden; transform:translateY(4px); transition:opacity .15s, transform .15s; z-index:40;
+    font-weight:400;
+  }
+  .term:hover .tip, .term:focus .tip{ opacity:1; visibility:visible; transform:translateY(0); }
+
+  .video-link{
+    display:inline-flex; align-items:center; gap:.35rem; font-size:.82rem; font-weight:700; color:var(--cyan);
+    text-decoration:none; border:1px solid var(--cyan); border-radius:999px; padding:.3rem .7rem; margin-top:.3rem;
+  }
+  .video-link:hover{ background:var(--cyan); color:var(--bg); }
+  .table-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+
+  /* ============ SECTIONS ============ */
+  section{ padding:3rem 0; }
+  .section-head{ display:flex; align-items:baseline; gap:.9rem; margin-bottom:.4rem; }
+  .section-num{ font-family:'JetBrains Mono',monospace; color:var(--volt); font-size:.85rem; }
+  section.muscle{ border-top:6px solid var(--accent); }
+  section.muscle .wrap{ padding-top:.5rem; }
+  section.muscle h2{ font-size:clamp(1.9rem,3.6vw,2.8rem); }
+  .group-intro{ max-width:62ch; color:var(--text-dim); margin:.6rem 0 .3rem; }
+  .rest-note{
+    display:inline-block; margin:.8rem 0 1.6rem; font-family:'JetBrains Mono',monospace; font-size:.78rem;
+    background:var(--surface); border:1px dashed var(--line-strong); padding:.4rem .8rem; border-radius:8px;
+  }
+  .rest-note strong{ color:var(--accent); }
+
+  :target{ animation:none; }
+  section:target{ box-shadow:inset 6px 0 0 var(--accent); background:rgba(255,255,255,.02); }
+
+  section#peito{ --accent:var(--coral); }
+  section#costas{ --accent:var(--cyan); }
+  section#ombros{ --accent:var(--violet); }
+  section#bracos{ --accent:var(--amber); }
+  section#pernas{ --accent:var(--volt); }
+  section#core{ --accent:var(--coral); }
+  section#plano-alimentar{ --accent:var(--amber); }
+
+  .exercise-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:1.1rem; }
+  .exercise-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    padding:0;
+  }
+  .exercise-card summary{
+    list-style:none; cursor:pointer; padding:1rem 1.1rem; display:flex; flex-direction:column; gap:.5rem;
+    position:relative;
+  }
+  .exercise-card summary::-webkit-details-marker{ display:none; }
+  .exercise-card summary::after{
+    content:"+"; position:absolute; right:1rem; top:1rem; font-family:'Bebas Neue',sans-serif; font-size:1.3rem; color:var(--volt);
+  }
+  .exercise-card[open] summary::after{ content:"–"; }
+  .ex-name{ font-weight:700; font-size:1.05rem; padding-right:1.4rem; }
+  .ex-tags{ display:flex; gap:.35rem; flex-wrap:wrap; }
+  .tag{
+    font-family:'JetBrains Mono',monospace; font-size:.66rem; text-transform:uppercase; letter-spacing:.04em;
+    padding:.2rem .5rem; border-radius:6px;
+  }
+  .tag.loc-casa{ background:var(--amber); color:#1a1200; }
+  .tag.loc-academia{ background:var(--violet); color:#fff; }
+  .tag.primary{ background:var(--coral); color:#fff; }
+  .ex-body{ padding:0 1.1rem 1.1rem; border-top:1px solid var(--line); }
+  .ex-body p{ margin:.8rem 0; font-size:.94rem; }
+  table.sets{ width:100%; border-collapse:collapse; margin:.9rem 0; font-size:.85rem; }
+  table.sets th, table.sets td{ text-align:left; padding:.4rem .3rem; border-bottom:1px solid var(--line); }
+  table.sets th{ font-family:'JetBrains Mono',monospace; font-size:.65rem; text-transform:uppercase; letter-spacing:.05em; color:var(--text-dim); }
+  .ex-tip{ font-size:.85rem; color:var(--text-dim); }
+
+  /* ============ WEEKLY PLAN ============ */
+  .tabs{ margin-top:1.2rem; }
+  .tab-labels{ display:flex; gap:.5rem; margin-bottom:1.3rem; flex-wrap:wrap; }
+  .tab-labels label{
+    font-family:'JetBrains Mono',monospace; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em;
+    padding:.5rem 1.1rem; border:1px solid var(--line-strong); border-radius:999px; cursor:pointer; font-weight:700;
+  }
+  #plan-iniciante:checked ~ .tab-labels label[for="plan-iniciante"],
+  #plan-intermediario:checked ~ .tab-labels label[for="plan-intermediario"],
+  #plan-avancado:checked ~ .tab-labels label[for="plan-avancado"]{
+    background:var(--volt); color:var(--bg); border-color:var(--volt);
+  }
+  .panel{ display:none; }
+  #plan-iniciante:checked ~ .panel-iniciante,
+  #plan-intermediario:checked ~ .panel-intermediario,
+  #plan-avancado:checked ~ .panel-avancado{ display:block; }
+  .plan-meta{ font-family:'JetBrains Mono',monospace; font-size:.82rem; color:var(--text-dim); margin-bottom:1.2rem; }
+  .day-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:1rem; }
+  .day-card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem; }
+  .day-card.rest{ background:transparent; border-style:dashed; opacity:.7; }
+  .day-num{ font-family:'Bebas Neue',sans-serif; font-size:1.8rem; color:var(--volt); line-height:1; }
+  .day-focus{ font-weight:700; margin:.3rem 0 .5rem; }
+  .day-groups{ display:flex; gap:.3rem; flex-wrap:wrap; margin-bottom:.5rem; }
+  .day-groups a{
+    font-size:.68rem; font-family:'JetBrains Mono',monospace; text-transform:uppercase; text-decoration:none;
+    background:var(--surface-2); border:1px solid var(--line-strong); border-radius:6px; padding:.15rem .4rem;
+    color:var(--text-dim);
+  }
+  .day-note{ font-size:.8rem; color:var(--text-dim); margin:0; }
+
+  /* ============ DIET ============ */
+  section.diet{ border-top:6px solid var(--amber); }
+  .diet-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1.1rem; margin:1.4rem 0; }
+  .diet-panel{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem; }
+  .diet-panel h3{ font-family:'Manrope',sans-serif; text-transform:none; font-weight:800; font-size:1.05rem; margin-bottom:.3rem; }
+  .diet-balance{ color:var(--amber); font-size:.72rem; letter-spacing:.06em; margin-bottom:.5rem; }
+  .diet-panel p{ font-size:.88rem; margin:.5rem 0; color:var(--text-dim); }
+  .diet-panel p strong{ color:var(--text); }
+
+  /* ============ GUIDE ============ */
+  section.guide{ background:var(--surface-2); }
+  .guide-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1.3rem; margin:1.8rem 0; }
+  .guide-grid article{ border-top:2px solid var(--volt); padding-top:.7rem; }
+  .guide-grid h3{ font-family:'Manrope',sans-serif; font-weight:800; text-transform:none; font-size:1.02rem; margin-bottom:.4rem; }
+  .guide-grid p{ font-size:.92rem; color:var(--text-dim); margin:0; }
+  .tooltip-hint{ font-size:.85rem; color:var(--text-dim); margin:1rem 0; }
+  .disclaimer{
+    font-size:.85rem; color:var(--text-dim); border-top:1px solid var(--line); padding-top:1.2rem; max-width:70ch;
+  }
+  .disclaimer strong{ color:var(--amber); }
+
+  footer{ background:var(--bg); color:var(--text-dim); padding:1.6rem 0; font-size:.8rem; text-align:center; border-top:1px solid var(--line); }
+
+  @media (max-width:860px){
+    .hero-inner{ grid-template-columns:1fr; }
+    .bodymap-wrap{ width:min(220px,70vw); }
+  }
+  @media (max-width:640px){
+    .controls-row{ flex-direction:column; align-items:flex-start; gap:.7rem; }
+    fieldset.filter{ flex-wrap:wrap; }
+  }
+  @media (max-width:480px){
+    .exercise-grid, .day-grid, .guide-grid, .diet-grid{ grid-template-columns:1fr; }
+    .hero{ padding:2.5rem 0 2rem; }
+    .stat-strip{ gap:.9rem; }
+    .term .tip{ width:180px; }
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{ scroll-behavior:auto; }
+    *{ transition:none !important; animation:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<a href="#plano-semanal" class="skip-link">Pular para o conteúdo</a>
+
+<!-- hidden state controls (pure-CSS interactivity) -->
+<input type="radio" name="lvl" id="lvl-todos" class="visually-hidden" checked>
+<input type="radio" name="lvl" id="lvl-iniciante" class="visually-hidden">
+<input type="radio" name="lvl" id="lvl-intermediario" class="visually-hidden">
+<input type="radio" name="lvl" id="lvl-avancado" class="visually-hidden">
+<input type="radio" name="loc" id="loc-ambos" class="visually-hidden" checked>
+<input type="radio" name="loc" id="loc-casa" class="visually-hidden">
+<input type="radio" name="loc" id="loc-academia" class="visually-hidden">
+<input type="radio" name="obj" id="obj-geral" class="visually-hidden" checked>
+<input type="radio" name="obj" id="obj-hipertrofia" class="visually-hidden">
+<input type="radio" name="obj" id="obj-perda" class="visually-hidden">
+<input type="radio" name="obj" id="obj-qualidade" class="visually-hidden">
+
+<header class="hero">
+  <div class="wrap hero-inner">
+    <div>
+      <p class="eyebrow">Guia de treino — casa &amp; academia</p>
+      <h1>Monte seu treino do jeito <span>certo</span></h1>
+      <p class="lede">Um plano completo, dividido por grupo muscular e por nível — do primeiro treino ao recorde pessoal. Escolha onde treinar e comece agora.</p>
+      <div class="stat-strip">
+        <div><strong>6</strong>grupos musculares</div>
+        <div><strong>26</strong>exercícios</div>
+        <div><strong>3</strong>níveis de treino</div>
+        <div><strong>3</strong>objetivos</div>
+        <div><strong>2</strong>ambientes: casa e academia</div>
+      </div>
+    </div>
+
+    <div class="bodymap-panel">
+      <input type="radio" name="view" id="view-front" class="visually-hidden" checked>
+      <input type="radio" name="view" id="view-back" class="visually-hidden">
+      <div class="view-toggle">
+        <label for="view-front">Frente</label>
+        <label for="view-back">Verso</label>
+      </div>
+      <div class="bodymap-wrap">
+        <svg class="bodymap" viewBox="0 0 240 520" role="img" aria-label="Mapa muscular do corpo humano, frente e verso. Toque em uma região para ir até a seção correspondente.">
+          <g class="view front-view">
+            <ellipse class="silhouette-base" cx="120" cy="42" rx="24" ry="28"/>
+            <rect class="silhouette-base" x="108" y="66" width="24" height="16"/>
+            <rect class="silhouette-base" x="80" y="90" width="80" height="150" rx="30"/>
+            <rect class="silhouette-base" x="50" y="95" width="22" height="170" rx="11"/>
+            <rect class="silhouette-base" x="168" y="95" width="22" height="170" rx="11"/>
+            <rect class="silhouette-base" x="85" y="235" width="30" height="190" rx="14"/>
+            <rect class="silhouette-base" x="125" y="235" width="30" height="190" rx="14"/>
+            <ellipse class="silhouette-base" cx="100" cy="505" rx="18" ry="8"/>
+            <ellipse class="silhouette-base" cx="140" cy="505" rx="18" ry="8"/>
+
+            <a href="#ombros" class="region"><title>Ombros</title><ellipse cx="95" cy="100" rx="20" ry="16"/></a>
+            <a href="#ombros" class="region"><title>Ombros</title><ellipse cx="145" cy="100" rx="20" ry="16"/></a>
+            <a href="#peito" class="region"><title>Peito</title><rect x="88" y="100" width="64" height="45" rx="14"/></a>
+            <a href="#bracos" class="region"><title>Braços</title><rect x="52" y="112" width="18" height="58" rx="9"/></a>
+            <a href="#bracos" class="region"><title>Braços</title><rect x="170" y="112" width="18" height="58" rx="9"/></a>
+            <a href="#core" class="region"><title>Core / Abdômen</title><rect x="92" y="155" width="56" height="60" rx="12"/></a>
+            <a href="#pernas" class="region"><title>Pernas</title><rect x="87" y="245" width="26" height="100" rx="12"/></a>
+            <a href="#pernas" class="region"><title>Pernas</title><rect x="127" y="245" width="26" height="100" rx="12"/></a>
+          </g>
+          <g class="view back-view">
+            <ellipse class="silhouette-base" cx="120" cy="42" rx="24" ry="28"/>
+            <rect class="silhouette-base" x="108" y="66" width="24" height="16"/>
+            <rect class="silhouette-base" x="80" y="90" width="80" height="150" rx="30"/>
+            <rect class="silhouette-base" x="50" y="95" width="22" height="170" rx="11"/>
+            <rect class="silhouette-base" x="168" y="95" width="22" height="170" rx="11"/>
+            <rect class="silhouette-base" x="85" y="235" width="30" height="190" rx="14"/>
+            <rect class="silhouette-base" x="125" y="235" width="30" height="190" rx="14"/>
+            <ellipse class="silhouette-base" cx="100" cy="505" rx="18" ry="8"/>
+            <ellipse class="silhouette-base" cx="140" cy="505" rx="18" ry="8"/>
+
+            <a href="#ombros" class="region"><title>Ombros (posterior)</title><ellipse cx="95" cy="100" rx="20" ry="16"/></a>
+            <a href="#ombros" class="region"><title>Ombros (posterior)</title><ellipse cx="145" cy="100" rx="20" ry="16"/></a>
+            <a href="#costas" class="region"><title>Costas</title><rect x="86" y="98" width="68" height="80" rx="14"/></a>
+            <a href="#bracos" class="region"><title>Braços (tríceps)</title><rect x="52" y="112" width="18" height="58" rx="9"/></a>
+            <a href="#bracos" class="region"><title>Braços (tríceps)</title><rect x="170" y="112" width="18" height="58" rx="9"/></a>
+            <a href="#pernas" class="region"><title>Glúteos</title><rect x="85" y="222" width="70" height="38" rx="18"/></a>
+            <a href="#pernas" class="region"><title>Posterior de coxa</title><rect x="87" y="255" width="26" height="90" rx="12"/></a>
+            <a href="#pernas" class="region"><title>Posterior de coxa</title><rect x="127" y="255" width="26" height="90" rx="12"/></a>
+          </g>
+        </svg>
+      </div>
+      <p class="map-hint">Toque em uma região do corpo, ou use os atalhos abaixo.</p>
+      <nav class="legend-row" aria-label="Atalhos por grupo muscular">
+        <a href="#peito">Peito</a><a href="#costas">Costas</a><a href="#ombros">Ombros</a>
+        <a href="#bracos">Braços</a><a href="#pernas">Pernas</a><a href="#core">Core</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="controls-row">
+    <fieldset class="filter">
+      <legend>Nível</legend>
+      <div class="pillgroup">
+        <label for="lvl-todos">Todos</label>
+        <label for="lvl-iniciante">Iniciante</label>
+        <label for="lvl-intermediario">Intermediário</label>
+        <label for="lvl-avancado">Avançado</label>
+      </div>
+    </fieldset>
+    <fieldset class="filter">
+      <legend>Local</legend>
+      <div class="pillgroup">
+        <label for="loc-ambos">Ambos</label>
+        <label for="loc-casa">Casa</label>
+        <label for="loc-academia">Academia</label>
+      </div>
+    </fieldset>
+    <fieldset class="filter">
+      <legend>Objetivo</legend>
+      <div class="pillgroup">
+        <label for="obj-geral">Geral</label>
+        <label for="obj-hipertrofia">Hipertrofia</label>
+        <label for="obj-perda">Perda de peso</label>
+        <label for="obj-qualidade">Qualidade de vida</label>
+      </div>
+    </fieldset>
+  </div>
+  <nav class="chipnav" aria-label="Navegação por seção">
+    <a href="#plano-semanal">Plano semanal</a>
+    <a href="#peito">Peito</a>
+    <a href="#costas">Costas</a>
+    <a href="#ombros">Ombros</a>
+    <a href="#bracos">Braços</a>
+    <a href="#pernas">Pernas</a>
+    <a href="#core">Core</a>
+    <a href="#plano-alimentar">Alimentação</a>
+    <a href="#guia">Guia rápido</a>
+  </nav>
+</div>
+
+<div class="scheme-wrap">
+  <div class="wrap">
+    <div class="scheme-block scheme-geral">
+      <p>Selecione um <strong>objetivo</strong> na barra acima (Hipertrofia, Perda de peso ou Qualidade de vida) para ver a intensidade, o estilo de execução e o plano alimentar recomendados para todos os exercícios abaixo.</p>
+    </div>
+    <div class="scheme-block scheme-hipertrofia">
+      <p class="scheme-title mono">OBJETIVO: HIPERTROFIA</p>
+      <p><strong>Repetições:</strong> 8–12 · <strong>Descanso:</strong> 60–90s (iniciantes no topo da faixa, avançados no mínimo) · <strong>Intensidade:</strong> treine perto da falha (<span class="term" tabindex="0">RPE<span class="tip" role="tooltip">Escala de esforço percebido de 1 a 10 — RPE 9 é quase no limite.</span></span> 8–9) nas séries finais.</p>
+      <p><strong>Técnicas recomendadas:</strong> <span class="term" tabindex="0">drop-set<span class="tip" role="tooltip">Reduza a carga e continue a série imediatamente após a falha.</span></span> e <span class="term" tabindex="0">rest-pause<span class="tip" role="tooltip">Pausa curta de 10–20s dentro da mesma série para conseguir mais repetições.</span></span> nas últimas séries. Descida controlada (2–3s) para maior tensão muscular. Veja o <a href="#plano-alimentar">plano alimentar para hipertrofia</a>.</p>
+    </div>
+    <div class="scheme-block scheme-perda">
+      <p class="scheme-title mono">OBJETIVO: PERDA DE PESO</p>
+      <p><strong>Repetições:</strong> 12–20 · <strong>Descanso:</strong> 20–40s (iniciantes no topo da faixa, avançados no mínimo) · <strong>Intensidade:</strong> moderada a alta, priorizando densidade de treino (mais trabalho no mesmo tempo).</p>
+      <p><strong>Técnica recomendada:</strong> monte <span class="term" tabindex="0">supersets<span class="tip" role="tooltip">Dois exercícios feitos em sequência, sem descanso entre eles.</span></span> entre grupos diferentes (ex.: Peito + Costas, ou Pernas + Core) para manter a frequência cardíaca elevada, combinando com atividade cardiovascular. Veja o <a href="#plano-alimentar">plano alimentar para perda de peso</a>.</p>
+    </div>
+    <div class="scheme-block scheme-qualidade">
+      <p class="scheme-title mono">OBJETIVO: QUALIDADE DE VIDA</p>
+      <p><strong>Repetições:</strong> 10–15 · <strong>Descanso:</strong> 60–90s (iniciantes no topo da faixa, avançados no mínimo) · <strong>Intensidade:</strong> moderada, sem necessidade de treinar até a <span class="term" tabindex="0">falha<span class="tip" role="tooltip">Ponto em que não é mais possível completar uma repetição com boa técnica.</span></span>.</p>
+      <p><strong>Técnica recomendada:</strong> execução simples, em amplitude completa e com boa técnica — priorize consistência semanal em vez de intensidade. Veja o <a href="#plano-alimentar">plano alimentar para qualidade de vida</a>.</p>
+    </div>
+  </div>
+</div>
+
+<main>
+
+<section id="plano-semanal">
+  <div class="wrap">
+    <div class="section-head"><span class="section-num mono">00</span><h2>Plano semanal</h2></div>
+    <p class="group-intro">Três estruturas prontas, uma para cada nível. Troque de aba para ver a divisão de dias, o foco de cada treino e para onde ele aponta no guia de exercícios abaixo.</p>
+
+    <div class="tabs">
+      <input type="radio" name="plan" id="plan-iniciante" class="visually-hidden" checked>
+      <input type="radio" name="plan" id="plan-intermediario" class="visually-hidden">
+      <input type="radio" name="plan" id="plan-avancado" class="visually-hidden">
+      <div class="tab-labels">
+        <label for="plan-iniciante">Iniciante</label>
+        <label for="plan-intermediario">Intermediário</label>
+        <label for="plan-avancado">Avançado</label>
+      </div>
+
+      <div class="panel panel-iniciante">
+        <p class="plan-meta mono">CORPO INTEIRO · 3X/SEMANA · descanso entre treinos: 1 dia</p>
+        <div class="day-grid">
+          <div class="day-card"><span class="day-num mono">1</span><p class="day-focus">Treino A — Corpo inteiro</p>
+            <div class="day-groups"><a href="#peito">Peito</a><a href="#costas">Costas</a><a href="#pernas">Pernas</a><a href="#core">Core</a></div>
+            <p class="day-note">Foco em aprender a técnica com carga leve.</p></div>
+          <div class="day-card rest"><span class="day-num mono">2</span><p class="day-focus">Descanso</p><p class="day-note">Caminhada leve ou alongamento, se quiser.</p></div>
+          <div class="day-card"><span class="day-num mono">3</span><p class="day-focus">Treino B — Corpo inteiro</p>
+            <div class="day-groups"><a href="#ombros">Ombros</a><a href="#bracos">Braços</a><a href="#pernas">Pernas</a><a href="#core">Core</a></div>
+            <p class="day-note">Mesma lógica do treino A, grupos diferentes.</p></div>
+          <div class="day-card rest"><span class="day-num mono">4</span><p class="day-focus">Descanso</p><p class="day-note">Recuperação — durma bem.</p></div>
+          <div class="day-card"><span class="day-num mono">5</span><p class="day-focus">Treino C — Corpo inteiro</p>
+            <div class="day-groups"><a href="#peito">Peito</a><a href="#costas">Costas</a><a href="#ombros">Ombros</a><a href="#core">Core</a></div>
+            <p class="day-note">Fecha a semana revisando os grupos principais.</p></div>
+          <div class="day-card rest"><span class="day-num mono">6–7</span><p class="day-focus">Descanso</p><p class="day-note">Dois dias livres antes de reiniciar o ciclo.</p></div>
+        </div>
+      </div>
+
+      <div class="panel panel-intermediario">
+        <p class="plan-meta mono">SUPERIOR / INFERIOR · 4X/SEMANA · descanso entre treinos: alternado</p>
+        <div class="day-grid">
+          <div class="day-card"><span class="day-num mono">1</span><p class="day-focus">Superior A</p>
+            <div class="day-groups"><a href="#peito">Peito</a><a href="#ombros">Ombros</a><a href="#bracos">Tríceps</a></div>
+            <p class="day-note">Empurrar: peito, ombro e tríceps.</p></div>
+          <div class="day-card"><span class="day-num mono">2</span><p class="day-focus">Inferior A</p>
+            <div class="day-groups"><a href="#pernas">Pernas</a><a href="#core">Core</a></div>
+            <p class="day-note">Foco em quadríceps e força geral de perna.</p></div>
+          <div class="day-card rest"><span class="day-num mono">3</span><p class="day-focus">Descanso</p><p class="day-note">Dia livre no meio da semana.</p></div>
+          <div class="day-card"><span class="day-num mono">4</span><p class="day-focus">Superior B</p>
+            <div class="day-groups"><a href="#costas">Costas</a><a href="#bracos">Bíceps</a><a href="#ombros">Ombros</a></div>
+            <p class="day-note">Puxar: costas, bíceps e deltoide posterior.</p></div>
+          <div class="day-card"><span class="day-num mono">5</span><p class="day-focus">Inferior B</p>
+            <div class="day-groups"><a href="#pernas">Pernas</a><a href="#core">Core</a></div>
+            <p class="day-note">Foco em posterior de coxa e glúteos.</p></div>
+          <div class="day-card rest"><span class="day-num mono">6–7</span><p class="day-focus">Descanso</p><p class="day-note">Recuperação total antes do próximo ciclo.</p></div>
+        </div>
+      </div>
+
+      <div class="panel panel-avancado">
+        <p class="plan-meta mono">PUSH / PULL / LEGS · 5–6X/SEMANA · cada grupo treinado 2x por ciclo</p>
+        <div class="day-grid">
+          <div class="day-card"><span class="day-num mono">1</span><p class="day-focus">Push</p>
+            <div class="day-groups"><a href="#peito">Peito</a><a href="#ombros">Ombros</a><a href="#bracos">Tríceps</a></div>
+            <p class="day-note">Volume alto, carga progressiva.</p></div>
+          <div class="day-card"><span class="day-num mono">2</span><p class="day-focus">Pull</p>
+            <div class="day-groups"><a href="#costas">Costas</a><a href="#bracos">Bíceps</a></div>
+            <p class="day-note">Puxadas verticais e horizontais.</p></div>
+          <div class="day-card"><span class="day-num mono">3</span><p class="day-focus">Legs</p>
+            <div class="day-groups"><a href="#pernas">Pernas</a><a href="#core">Core</a></div>
+            <p class="day-note">Quadríceps, posterior, glúteos e panturrilha.</p></div>
+          <div class="day-card"><span class="day-num mono">4</span><p class="day-focus">Push 2</p>
+            <div class="day-groups"><a href="#peito">Peito</a><a href="#ombros">Ombros</a><a href="#bracos">Tríceps</a></div>
+            <p class="day-note">Repete com ângulos/exercícios diferentes.</p></div>
+          <div class="day-card"><span class="day-num mono">5</span><p class="day-focus">Pull 2</p>
+            <div class="day-groups"><a href="#costas">Costas</a><a href="#bracos">Bíceps</a></div>
+            <p class="day-note">Repete com ângulos/exercícios diferentes.</p></div>
+          <div class="day-card"><span class="day-num mono">6</span><p class="day-focus">Legs 2</p>
+            <div class="day-groups"><a href="#pernas">Pernas</a><a href="#core">Core</a></div>
+            <p class="day-note">Se sentir fadiga acumulada, troque por descanso.</p></div>
+          <div class="day-card rest"><span class="day-num mono">7</span><p class="day-focus">Descanso completo</p><p class="day-note">Obrigatório, mesmo em nível avançado.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="peito" class="muscle">
+  <div class="wrap">
+    <div class="section-head"><span class="section-num mono">01</span><h2>Peito</h2></div>
+    <p class="group-intro">Peitoral maior, com apoio do tríceps e deltoide anterior nos movimentos de empurrar horizontal.</p>
+    <span class="rest-note">Descanso recomendado antes de treinar peito de novo: <strong>48h</strong></span>
+    <div class="exercise-grid">
+
+      <details class="exercise-card lvl-iniciante lvl-intermediario lvl-avancado loc-casa loc-academia">
+        <summary><span class="ex-name">Flexão de braço</span>
+          <span class="ex-tags"><span class="tag loc-casa">Casa</span><span class="tag loc-academia">Academia</span><span class="tag primary">Peitoral</span></span></summary>
+        <div class="ex-body">
+          <p>Apoie as mãos alinhadas aos ombros, corpo reto como uma tábua, desça o peito quase até o chão e empurre de volta.</p>
+          <p><strong>Músculos secundários:</strong> tríceps, deltoide anterior, core.</p>
+          <div class="table-scroll"><table class="sets mono"><thead><tr><th>Iniciante</th><th>Intermediário</th><th>Avançado</th></tr></thead>
+            <tbody><tr><td class="col-inic">3×8–10 (joelhos apoiados se precisar)</td><td class="col-inter">4×15</td><td class="col-avan">4×20+ ou com lastro</td></tr></tbody></table></div>
+          <p class="ex-tip"><strong>Dica:</strong> cotovelos a ~45° do corpo, não deixe o quadril cair.</p>
+          <p class="ex-video"><a class="video-link" href="https://www.youtube.com/results?search_query=flexao+de+braco+execucao+correta" target="_blank" rel="noopener">▶ Ver demonstração no YouTube ↗</a></p>
+        </div>
+      </details>
+
+      <details class="exercise-card lvl-intermediario lvl-avancado loc-academia">
+        <summary><span class="ex-name">Supino reto com barra</span>
+          <span class="ex-tags"><span class="tag loc-academia">Academia</span><span class="tag primary">Peitoral</span></span></summary>
+        <div class="ex-body">
+          <p>Deitado no banco, desça a barra controlada até a altura do peito e empurre até estender os braços sem travar os cotovelos.</p>
+          <p><strong>Músculos secundários:</strong> tríceps, deltoide anterior.</p>
+          <div class="table-scroll"><table class="sets mono"><thead><tr><th>Iniciante</th><th>Intermediário</th><th>Avançado</th></tr></thead>
+            <tbody><tr><td class="col-inic">—</td><td class="col-inter">4×8–10</td><td class="col-avan">5×6–8 carga alta</td></tr></tbody></table></div>
+          <p class="ex-tip"><strong>Dica:</strong> use um parceiro de treino ou pegador ao aumentar a carga.</p>
+          <p class="ex-video"><a class="video-link" href="https://www.youtube.com/results?search_query=supino+reto+com+barra+execucao+correta" target="_blank" rel="noopener">▶ Ver demonstração no YouTube ↗</a></p>
+        </div>
+      </details>
+
+      <details class="exercise-card lvl-iniciante lvl-intermediario lvl-avancado loc-casa loc-academia">
+        <summary><span class="ex-name">Supino com halteres</span>
+          <span class="ex-tags"><span class="tag loc-casa">Casa</span><span class="tag loc-academia">Academia</span><span class="tag primary">Peitoral</span></span></summary>
+        <div class="ex-body">
+          <p class="ex-desc-variant desc-academia"><span class="loc-tag-label mono">Na academia</span>Deitado no banco, com halteres na altura do peito, empurre para cima até quase travar os cotovelos — a amplitude maior que a barra ajuda a alongar bem o peitoral na descida.</p>
+          <p class="ex-desc-variant desc-casa"><span class="loc-tag-label mono">Em casa</span>Garrafas ou galões de água cheios substituem os halteres. Deitado no chão ou num banco improvisado, empurre para cima com a mesma trajetória, controlando a descida.</p>
+          <p><strong>Músculos secundários:</strong> tríceps, deltoide anterior.</p>
+          <div class="table-scroll"><table class="sets mono"><thead><tr><th>Iniciante</th><th>Intermediário</th><th>Avançado</th></tr></thead>
+            <tbody><tr><td class="col-inic">3×10</td><td class="col-inter">4×10–12</td><td class="col-avan">4×12 + <span class="term" tabindex="0">drop-set<span class="tip" role="tooltip">Reduza a carga e continue a série imediatamente após a falha.</span></span></td></tr></tbody></table></div>
+          <p class="ex-tip"><strong>Dica:</strong> desça até sentir alongamento leve no peito, sem forçar o ombro.</p>
+          <p class="ex-video"><a class="video-link" href="https://www.youtube.com/results?search_query=supino+com+halteres+execucao+correta" target="_blank" rel="noopener">▶ Ver demonstração no YouTube ↗</a></p>
+        </div>
+      </details>
+
+      <details class="exercise-card lvl-iniciante lvl-intermediario lvl-avancado loc-casa loc-academia">
+        <summary><span class="ex-name">Crucifixo</span>
+          <span class="ex-tags"><span class="tag loc-casa">Casa</span><span class="tag loc-academia">Academia</span><span class="tag primary">Peitoral</span></span></summary>
+        <div class="ex-body">
+          <p class="ex-desc-variant desc-academia"><span class="loc-tag-label mono">Na academia</span>Com halteres ou no aparelho de crucifixo (cross-over), abra os braços lateralmente com leve flexão de cotovelo, focando no alongamento e contração do peitoral.</p>
+          <p class="ex-desc-variant desc-casa"><span class="loc-tag-label mono">Em casa</span>Com halteres leves ou um elástico fixado atrás do corpo, faça a mesma abertura lateral, sentindo o alongamento no peito.</p>
+          <p><strong>Músculos secundários:</strong> deltoide anterior.</p>
+          <div class="table-scroll"><table class="sets mono"><thead><tr><th>Iniciante</th><th>Intermediário</th><th>Avançado</th></tr></thead>
+            <tbody><tr><td class="col-inic">2×12 leve</td><td class="col-inter">3×12–15</td><td class="col-avan">4×15</td></tr></tbody></table></div>
+          <p class="ex-tip"><strong>Dica:</strong> mantenha uma leve flexão fixa no cotovelo durante todo o movimento.</p>
+          <p class="ex-video"><a class="video-link" href="https://www.youtube.com/results?search_query=crucifixo+peito+execucao+correta" target="_blank" rel="noopener">▶ Ver demonstração no YouTube ↗</a></p>
+        </div>
+      </details>
+
+      <details class="exercise-card lvl-intermediario lvl-avancado loc-casa loc-academia">
+        <summary><span class="ex-name">Paralelas (dips)</span>
+          <span class="ex-tags"><span class="tag loc-casa">Casa</span><span class="tag loc-academia">Academia</span><span class="tag primary">Peitoral</span></span></summary>
+        <div class="ex-body">
+          <p class="ex-desc-variant desc-academia"><span class="loc-tag-label mono">Na academia</span>Nas paralelas, apoie as mãos e desça o corpo flexionando os cotovelos; inclinar o tronco para frente enfatiza o peitoral.</p>
+          <p class="ex-desc-variant desc-casa"><span class="loc-tag-label mono">Em casa</span>Sem paralelas, apoie as mãos nas bordas de duas cadeiras firmes e estáveis, e desça o corpo entre elas com o mesmo movimento.</p>
+          <p><strong>Músculos secundários:</strong> tríceps, deltoide anterior.</p>
+          <div class="table-scroll"><table class="sets mono"><thead><tr><th>Iniciante</th><th>Intermediário</th><th>Avançado</th></tr></thead>
+            <tbody><tr><td class="col-inic">—</td><td class="col-inter">3×10</td><td class="col-avan">4×15 ou com peso</td></tr></tbody></table></div>
+          <p class="ex-tip"><strong>Dica:</strong> desça só até sentir alongamento no peito — não force o ombro além disso.</p>
+          <p class="ex-video"><a class="video-link" href="https://www.youtube.com/results?search_query=mergulho+paralelas+peito+execucao+correta" target="_blank" rel="noopener">▶ Ver demonstração no YouTube ↗</a></p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<section id="costas" class="muscle">
+  <div class="wrap">
+    <div class="section-head"><span class="section-num mono">02</span><h2>Costas</h2></div>
+    <p class="group-intro">Latíssimo do dorso, trapézio e romboides — a base de todo movimento de puxar.</p>
+    <span class="rest-note">Descanso recomendado antes de treinar costas de novo: <strong>48–72h</strong></span>
+    <div class="exercise-grid">
+
+      <details class="exercise-card lvl-iniciante lvl-intermediario lvl-avancado loc-casa loc-academia">
+        <summary><span class="ex-name">Remada curvada</span>
+          <span class="ex-tags"><span class="tag loc-casa">Casa</span><span class="tag loc-academia">Academia</span><span class="tag primary">Costas</span></span></summary>
+        <div class="ex-body">
+          <p class="ex-desc-variant desc-academia"><span class="loc-tag-label mono">Na academia</span>Tronco inclinado a ~45°, com halteres ou barra, puxe o peso em direção ao abdômen apertando as escápulas no topo.</p>
+          <p class="ex-desc-variant desc-casa"><span class="loc-tag-label mono">Em casa</span>Tronco inclinado a ~45°, use uma mochila com peso ou um galão de água, puxando em direção ao abdômen e apertando as escápulas no topo.</p>
+          <p><strong>Músculos secundários:</strong> bíceps, deltoide posterior.</p>
+          <div class="table-scroll"><table class="sets mono"><thead><tr><th>Iniciante</th><th>Intermediário</th><th>Avançado</th></tr></thead>
+            <tbody><tr><td class="col-inic">3×10</td><td class="col-inter">4×10–12</td><td class="col-avan">4×12 carga alta</td></tr></tbody></table></div>
+          <p class="ex-tip"><strong>Dica:</strong> mantenha a coluna neutra — se ela curvar, reduza a carga.</p>
+          <p class="ex-video"><a class="video-link" href="https://www.youtube.com/results?search_query=remada+curvada+execucao+correta" target="_blank" rel="noopener">▶ Ver demonstração no YouTube ↗</a></p>
+        </div>
+      </details>
+
+      <details class="exercise-card lvl-iniciante lvl-intermediario lvl-avancado loc-casa loc-academia">
+        <summary><span class="ex-name">Puxada alta</span>
+          <span class="ex-tags"><span class="tag loc-casa">Casa</span><span class="tag loc-academia">Academia</span><span class="tag primary">Costas</span></span></summary>
+        <div class="ex-body">
+          <p class="ex-desc-variant desc-academia"><span class="loc-tag-label mono">Na academia</span>Na polia alta, puxe a barra até a altura do peito, cotovelos apontando para baixo, controlando a subida.</p>
+          <p class="ex-desc-variant desc-casa"><span class="loc-tag-label mono">Em casa</span>Fixe um elástico no topo de uma porta e puxe até a altura do peito, com o mesmo controle na volta.</p>
+          <p><strong>Músculos secundários:</strong> bíceps.</p>
+          <div class="table-scroll"><table class="sets mono"><thead><tr><th>Iniciante</th><th>Intermediário</th><th>Avançado</th></tr></thead>
+            <tbody><tr><td class="col-inic">3×12</td><td class="col-inter">4×12</td><td class="col-avan">4×15 carga alta</td></tr></tbody></table></div>
+          <p class="ex-tip"><strong>Dica:</strong> controle a subida — não deixe o peso "puxar" seus braços de volta.</p>
+          <p class="ex-video"><a class="video-link" href="https://www.youtube.com/results?search_query=puxada+alta+execucao+correta" target="_blank" rel="noopener">▶ Ver demonstração no YouTube ↗</a></p>
+        </div>
+      </details>
+
+      <details class="exercise-card lvl-intermediario lvl-avancado loc-casa loc-academia">
+        <summary><span class="ex-name">Barra fixa</span>
+          <span class="ex-tags"><span class="tag loc-casa">Casa</span><span class="tag loc-academia">Academia</span><span class="tag primary">Costas</span></span></summary>
+        <div class="ex-body">
+          <p class="ex-desc-variant desc-academia"><span class="loc-tag-label mono">Na academia</span>Na barra fixa, puxe o corpo até o queixo passar a barra, controlando a descida.</p>
+          <p class="ex-desc-variant desc-casa"><span class="loc-tag-label mono">Em casa</span>Sem barra fixa, faça uma remada invertida sob uma mesa ou barra firme e estável — o mesmo padrão de puxada, em ângulo mais fácil.</p>
+          <p><strong>Músculos secundários:</strong> bíceps, antebraço.</p>
+          <div class="table-scroll"><table class="sets mono"><thead><tr><th>Iniciante</th><th>Intermediário</th><th>Avançado</th></tr></thead>
+            <tbody><tr><td class="col-inic">—</td><td class="col-inter">4×6–8 (assistido se precisar)</td><td class="col-avan">4×10+ ou com lastro</td></tr></tbody></table></div>
+          <p class="ex-tip"><strong>Dica:</strong> se ainda não consegue nenhuma repetição, treine a fase negativa (descida lenta).</p>
+          <p class="ex-video"><a class="video-link" href="https://www.youtube.com/results?search_query=barra+fixa+execucao+correta" target="_blank" rel="noopener">▶ Ver demonstração no YouTube ↗</a></p>
+        </div>
+      </details>
+
+      <details class="exercise-card lvl-iniciante lvl-intermediario lvl-avancado loc-casa loc-academia">
+        <summary><span class="ex-name">Levantamento terra (ou Superman em casa)</span>
+          <span class="ex-tags"><span class="tag loc-casa">Casa</span><span class="tag loc-academia">Academia</span><span class="tag primary">Costas</span></span></summary>
+        <div class="ex-body">
+          <p class="ex-desc-variant desc-academia"><span class="loc-tag-label mono">Na academia</span>Com a barra no chão, quadril para trás e costas retas, levante o peso mantendo a barra próxima ao corpo até ficar em pé.</p>
+          <p class="ex-desc-variant desc-casa"><span class="loc-tag-label mono">Em casa</span>Sem peso, o "Superman" — deitado de barriga para baixo, elevando braços e pernas ao mesmo tempo — ensina o mesmo padrão da cadeia posterior.</p>
+          <p><strong>Músculos secundários:</strong> glúteos, posterior de coxa, lombar.</p>
+          <div class="table-scroll"><table class="sets mono"><thead><tr><th>Iniciante</th><th>Intermediário</th><th>Avançado</th></tr></thead>
+            <tbody><tr><td class="col-inic">3×8 (técnica, sem carga)</td><td class="col-inter">4×6–8</td><td class="col-avan">5×5 carga progressiva</td></tr></tbody></table></div>
+          <p class="ex-tip"><strong>Dica:</strong> priorize a técnica sempre — é o exercício com maior risco se malfeito.</p>
+          <p class="ex-video"><a class="video-link" href="https://www.youtube.com/results?search_query=levantamento+terra+execucao+correta" target="_blank" rel="noopener">▶ Ver demonstração no YouTube ↗</a></p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<section id="ombros" class="muscle">
+  <div class="wrap">
+    <div class="section-head"><span class="section-num mono">03</span><h2>Ombros</h2></div>
+    <p class="group-intro">Deltoide anterior, lateral e posterior — dão a largura e a estabilidade dos braços.</p>
+    <span class="rest-note">Descanso recomendado antes de treinar ombro de novo: <strong>48h</strong></span>
+    <div class="exercise-grid">
+
+      <details class="exercise-card lvl-iniciante lvl-intermediario lvl-avancado loc-casa loc-academia">
+        <summary><span class="ex-name">Elevação lateral</span>
+          <span class="ex-tags"><span class="tag loc-casa">Casa</span><span class="tag loc-academia">Academia</span><span class="tag primary">Deltoide lateral</span></span></summary>
+        <div class="ex-body">
+          <p class="ex-desc-variant desc-academia"><span class="loc-tag-label mono">Na academia</span>Com halteres, eleve os braços até a altura dos ombros com leve flexão de cotovelo.</p>
+          <p class="ex-desc-variant desc-casa"><span class="loc-tag-label mono">Em casa</span>Com garrafas de água como peso, eleve os braços até a altura dos ombros com leve flexão de cotovelo.</p>
+          <p><strong>Músculos secundários:</strong> trapézio superior.</p>
+          <div class="table-scroll"><table class="sets mono"><thead><tr><th>Iniciante</th><th>Intermediário</th><th>Avançado</th></tr></thead>
+            <tbody><tr><td class="col-inic">3×12 leve</td><td class="col-inter">4×12–15</td><td class="col-avan">4×15–20</td></tr></tbody></table></div>
+          <p class="ex-tip"><strong>Dica:</strong> não use impulso do tronco — o movimento é só do braço.</p>
+          <p class="ex-video"><a class="video-link" href="https://www.youtube.com/results?search_query=elevacao+lateral+ombro+execucao+correta" target="_blank" rel="noopener">▶ Ver demonstração no YouTube ↗</a></p>
+        </div>
+      </details>
+
+      <details class="exercise-card lvl-intermediario lvl-avancado loc-casa loc-academia">
+        <summary><span class="ex-name">Desenvolvimento (militar)</span>
+          <span class="ex-tags"><span class="tag loc-casa">Casa</span><span class="tag loc-academia">Academia</span><span class="tag primary">Deltoide anterior</span></span></summary>
+        <div class="ex-body">
+          <p class="ex-desc-variant desc-academia"><span class="loc-tag-label mono">Na academia</span>Com barra ou halteres, empurre o peso de frente aos ombros até estender os braços acima da cabeça.</p>
+          <p class="ex-desc-variant desc-casa"><span class="loc-tag-label mono">Em casa</span>Com halteres ou uma mochila com peso, empurre para cima com o mesmo movimento, cuidando para não arquear a lombar.</p>
+          <p><strong>Músculos secundários:</strong> tríceps, trapézio.</p>
+          <div class="table-scroll"><table class="sets mono"><thead><tr><th>Iniciante</th><th>Intermediário</th><th>Avançado</th></tr></thead>
+            <tbody><tr><td class="col-inic">—</td><td class="col-inter">4×8–10</td><td class="col-avan">5×6–8</td></tr></tbody></table></div>
+          <p class="ex-tip"><strong>Dica:</strong> evite arquear demais a lombar — contraia o abdômen.</p>
+          <p class="ex-video"><a class="video-link" href="https://www.youtube.com/results?search_query=desenvolvimento+militar+ombro+execucao+correta" target="_blank" rel="noopener">▶ Ver demonstração no YouTube ↗</a></p>
+        </div>
+      </details>
+
+      <details class="exercise-card lvl-iniciante lvl-intermediario lvl-avancado loc-casa loc-academia">
+        <summary><span class="ex-name">Elevação frontal</span>
+          <span class="ex-tags"><span class="tag loc-casa">Casa</span><span class="tag loc-academia">Academia</span><span class="tag primary">Deltoide anterior</span></span></summary>
+        <div class="ex-body">
+          <p>Eleve o peso à frente do corpo até a altura dos ombros, cotovelos levemente flexionados.</p>
+          <p><strong>Músculos secundários:</strong> peitoral superior.</p>
+          <div class="table-scroll"><table class="sets mono"><thead><tr><th>Iniciante</th><th>Intermediário</th><th>Avançado</th></tr></thead>
+            <tbody><tr><td class="col-inic">2×12</td><td class="col-inter">3×12–15</td><td class="col-avan">4×15</td></tr></tbody></table></div>
+          <p class="ex-tip"><strong>Dica:</strong> alterne os braços se a carga estiver alta demais para os dois juntos.</p>
+          <p class="ex-video"><a class="video-link" href="https://www.youtube.com/results?search_query=elevacao+frontal+ombro+execucao+correta" target="_blank" rel="noopener">▶ Ver demonstração no YouTube ↗</a></p>
+        </div>
+      </details>
+
+      <details class="exercise-card lvl-intermediario lvl-avancado loc-casa loc-academia">
+        <summary><span class="ex-name">Crucifixo invertido</span>
+          <span class="ex-tags"><span class="tag loc-casa">Casa</span><span class="tag loc-academia">Academia</span><span class="tag primary">Deltoide posterior</span></span></summary>
+        <div class="ex-body">
+          <p>Tronco inclinado para frente, abra os braços lateralmente contraindo as escápulas — o par ideal de todo treino de peito/ombro anterior.</p>
+          <p><strong>Músculos secundários:</strong> romboides, trapézio.</p>
+          <div class="table-scroll"><table class="sets mono"><thead><tr><th>Iniciante</th><th>Intermediário</th><th>Avançado</th></tr></thead>
+            <tbody><tr><td class="col-inic">—</td><td class="col-inter">3×15</td><td class="col-avan">4×15–20</td></tr></tbody></table></div>
+          <p class="ex-tip"><strong>Dica:</strong> use carga baixa — esse músculo cansa rápido e a técnica piora fácil.</p>
+          <p class="ex-video"><a class="video-link" href="https://www.youtube.com/results?search_query=crucifixo+invertido+execucao+correta" target="_blank" rel="noopener">▶ Ver demonstração no YouTube ↗</a></p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<section id="bracos" class="muscle">
+  <div class="wrap">
+    <div class="section-head"><span class="section-num mono">04</span><h2>Braços</h2></div>
+    <p class="group-intro">Bíceps (flexão do cotovelo) e tríceps (extensão do cotovelo) — trabalham em quase todo exercício de puxar e empurrar, mas merecem volume isolado também.</p>
+    <span class="rest-note">Descanso recomendado antes de treinar braço de novo: <strong>48h</strong></span>
+    <div class="exercise-grid">
+
+      <details class="exercise-card lvl-iniciante lvl-intermediario lvl-avancado loc-casa loc-academia">
+        <summary><span class="ex-name">Rosca direta</span>
+          <span class="ex-tags"><span class="tag loc-casa">Casa</span><span class="tag loc-academia">Academia</span><span class="tag primary">Bíceps</span></span></summary>
+        <div class="ex-body">
+          <p class="ex-desc-variant desc-academia"><span class="loc-tag-label mono">Na academia</span>Com halteres ou barra, flexione o cotovelo trazendo o peso até a altura do ombro, sem balançar o corpo.</p>
+          <p class="ex-desc-variant desc-casa"><span class="loc-tag-label mono">Em casa</span>Com um galão de água como peso, flexione o cotovelo até a altura do ombro, sem balançar o corpo.</p>
+          <p><strong>Músculos secundários:</strong> antebraço.</p>
+          <div class="table-scroll"><table class="sets mono"><thead><tr><th>Iniciante</th><th>Intermediário</th><th>Avançado</th></tr></thead>
+            <tbody><tr><td class="col-inic">3×10</td><td class="col-inter">4×10–12</td><td class="col-avan">4×12–15</td></tr></tbody></table></div>
+          <p class="ex-tip"><strong>Dica:</strong> cotovelo fixo ao lado do corpo durante todo o movimento.</p>
+          <p class="ex-video"><a class="video-link" href="https://www.youtube.com/results?search_query=rosca+direta+biceps+execucao+correta" target="_blank" rel="noopener">▶ Ver demonstração no YouTube ↗</a></p>
+        </div>
+      </details>
+
+      <details class="exercise-card lvl-iniciante lvl-intermediario lvl-avancado loc-casa loc-academia">
+        <summary><span class="ex-name">Rosca martelo</span>
+          <span class="ex-tags"><span class="tag loc-casa">Casa</span><span class="tag loc-academia">Academia</span><span class="tag primary">Bíceps</span></span></summary>
+        <div class="ex-body">
+          <p>Igual à rosca direta, mas com a palma da mão voltada para dentro (pegada neutra) — recruta mais o braquial.</p>
+          <p><strong>Músculos secundários:</strong> antebraço.</p>
+          <div class="table-scroll"><table class="sets mono"><thead><tr><th>Iniciante</th><th>Intermediário</th><th>Avançado</th></tr></thead>
+            <tbody><tr><td class="col-inic">3×10</td><td class="col-inter">4×10–12</td><td class="col-avan">4×12–15</td></tr></tbody></table></div>
+          <p class="ex-tip"><strong>Dica:</strong> boa opção para variar o estímulo sem trocar o equipamento.</p>
+          <p class="ex-video"><a class="video-link" href="https://www.youtube.com/results?search_query=rosca+martelo+execucao+correta" target="_blank" rel="noopener">▶ Ver demonstração no YouTube ↗</a></p>
+        </div>
+      </details>
+
+      <details class="exercise-card lvl-iniciante lvl-intermediario lvl-avancado loc-casa loc-academia">
+        <summary><span class="ex-name">Tríceps no banco (mergulho)</span>
+          <span class="ex-tags"><span class="tag loc-casa">Casa</span><span class="tag loc-academia">Academia</span><span class="tag primary">Tríceps</span></span></summary>
+        <div class="ex-body">
+          <p class="ex-desc-variant desc-academia"><span class="loc-tag-label mono">Na academia</span>Mãos apoiadas na borda de um banco, desça o corpo flexionando os cotovelos e empurre de volta.</p>
+          <p class="ex-desc-variant desc-casa"><span class="loc-tag-label mono">Em casa</span>Mãos apoiadas na borda de uma cadeira firme, desça o corpo flexionando os cotovelos e empurre de volta.</p>
+          <p><strong>Músculos secundários:</strong> deltoide anterior.</p>
+          <div class="table-scroll"><table class="sets mono"><thead><tr><th>Iniciante</th><th>Intermediário</th><th>Avançado</th></tr></thead>
+            <tbody><tr><td class="col-inic">3×8–10</td><td class="col-inter">4×12–15</td><td class="col-avan">4×15–20 ou pés elevados</td></tr></tbody></table></div>
+          <p class="ex-tip"><strong>Dica:</strong> mantenha os cotovelos apontando para trás, não para os lados.</p>
+          <p class="ex-video"><a class="video-link" href="https://www.youtube.com/results?search_query=triceps+banco+mergulho+execucao+correta" target="_blank" rel="noopener">▶ Ver demonstração no YouTube ↗</a></p>
+        </div>
+      </details>
+
+      <details class="exercise-card lvl-intermediario lvl-avancado loc-casa loc-academia">
+        <summary><span class="ex-name">Tríceps testa / corda</span>
+          <span class="ex-tags"><span class="tag loc-casa">Casa</span><span class="tag loc-academia">Academia</span><span class="tag primary">Tríceps</span></span></summary>
+        <div class="ex-body">
+          <p class="ex-desc-variant desc-academia"><span class="loc-tag-label mono">Na academia</span>Na polia com corda, estenda os cotovelos mantendo os braços fixos junto à cabeça.</p>
+          <p class="ex-desc-variant desc-casa"><span class="loc-tag-label mono">Em casa</span>Com uma garrafa ou halter atrás da cabeça (tríceps francês), estenda os cotovelos com o mesmo movimento.</p>
+          <p><strong>Músculos secundários:</strong> —</p>
+          <div class="table-scroll"><table class="sets mono"><thead><tr><th>Iniciante</th><th>Intermediário</th><th>Avançado</th></tr></thead>
+            <tbody><tr><td class="col-inic">—</td><td class="col-inter">3×12–15</td><td class="col-avan">4×15</td></tr></tbody></table></div>
+          <p class="ex-tip"><strong>Dica:</strong> só o antebraço se move — o braço fica fixo junto à cabeça.</p>
+          <p class="ex-video"><a class="video-link" href="https://www.youtube.com/results?search_query=triceps+corda+testa+execucao+correta" target="_blank" rel="noopener">▶ Ver demonstração no YouTube ↗</a></p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<section id="pernas" class="muscle">
+  <div class="wrap">
+    <div class="section-head"><span class="section-num mono">05</span><h2>Pernas</h2></div>
+    <p class="group-intro">Quadríceps, posterior de coxa, glúteos e panturrilha — o maior grupo muscular do corpo, e o que mais exige recuperação.</p>
+    <span class="rest-note">Descanso recomendado antes de treinar perna de novo: <strong>72h</strong></span>
+    <div class="exercise-grid">
+
+      <details class="exercise-card lvl-iniciante lvl-intermediario lvl-avancado loc-casa loc-academia">
+        <summary><span class="ex-name">Agachamento livre</span>
+          <span class="ex-tags"><span class="tag loc-casa">Casa</span><span class="tag loc-academia">Academia</span><span class="tag primary">Quadríceps</span></span></summary>
+        <div class="ex-body">
+          <p>Pés na largura dos ombros, desça flexionando quadril e joelho como se fosse sentar, mantendo o peito erguido.</p>
+          <p><strong>Músculos secundários:</strong> glúteos, core.</p>
+          <div class="table-scroll"><table class="sets mono"><thead><tr><th>Iniciante</th><th>Intermediário</th><th>Avançado</th></tr></thead>
+            <tbody><tr><td class="col-inic">3×10–12</td><td class="col-inter">4×15</td><td class="col-avan">4–5×20+ ou com carga</td></tr></tbody></table></div>
+          <p class="ex-tip"><strong>Dica:</strong> joelhos seguem a direção dos pés, sem colapsar para dentro.</p>
+          <p class="ex-video"><a class="video-link" href="https://www.youtube.com/results?search_query=agachamento+livre+execucao+correta" target="_blank" rel="noopener">▶ Ver demonstração no YouTube ↗</a></p>
+        </div>
+      </details>
+
+      <details class="exercise-card lvl-iniciante lvl-intermediario lvl-avancado loc-casa loc-academia">
+        <summary><span class="ex-name">Afundo / passada</span>
+          <span class="ex-tags"><span class="tag loc-casa">Casa</span><span class="tag loc-academia">Academia</span><span class="tag primary">Quadríceps</span></span></summary>
+        <div class="ex-body">
+          <p>Dê um passo à frente e desça até o joelho de trás quase tocar o chão, depois volte à posição inicial. Alterne as pernas.</p>
+          <p><strong>Músculos secundários:</strong> glúteos, equilíbrio/core.</p>
+          <div class="table-scroll"><table class="sets mono"><thead><tr><th>Iniciante</th><th>Intermediário</th><th>Avançado</th></tr></thead>
+            <tbody><tr><td class="col-inic">3×8 por perna</td><td class="col-inter">4×12 por perna</td><td class="col-avan">4×15 por perna ou com carga</td></tr></tbody></table></div>
+          <p class="ex-tip"><strong>Dica:</strong> tronco ereto — inclinar para frente sobrecarrega o joelho.</p>
+          <p class="ex-video"><a class="video-link" href="https://www.youtube.com/results?search_query=afundo+passada+execucao+correta" target="_blank" rel="noopener">▶ Ver demonstração no YouTube ↗</a></p>
+        </div>
+      </details>
+
+      <details class="exercise-card lvl-intermediario lvl-avancado loc-casa loc-academia">
+        <summary><span class="ex-name">Levantamento terra romeno (stiff)</span>
+          <span class="ex-tags"><span class="tag loc-casa">Casa</span><span class="tag loc-academia">Academia</span><span class="tag primary">Posterior de coxa</span></span></summary>
+        <div class="ex-body">
+          <p>Pernas quase estendidas, incline o quadril para trás mantendo a coluna neutra até sentir alongamento no posterior de coxa, depois retorne.</p>
+          <p><strong>Músculos secundários:</strong> glúteos, lombar.</p>
+          <div class="table-scroll"><table class="sets mono"><thead><tr><th>Iniciante</th><th>Intermediário</th><th>Avançado</th></tr></thead>
+            <tbody><tr><td class="col-inic">—</td><td class="col-inter">4×10–12</td><td class="col-avan">4×12 carga alta</td></tr></tbody></table></div>
+          <p class="ex-tip"><strong>Dica:</strong> o movimento vem do quadril, não da flexão da coluna.</p>
+          <p class="ex-video"><a class="video-link" href="https://www.youtube.com/results?search_query=levantamento+terra+romeno+stiff+execucao+correta" target="_blank" rel="noopener">▶ Ver demonstração no YouTube ↗</a></p>
+        </div>
+      </details>
+
+      <details class="exercise-card lvl-iniciante lvl-intermediario lvl-avancado loc-casa loc-academia">
+        <summary><span class="ex-name">Elevação pélvica (hip thrust)</span>
+          <span class="ex-tags"><span class="tag loc-casa">Casa</span><span class="tag loc-academia">Academia</span><span class="tag primary">Glúteos</span></span></summary>
+        <div class="ex-body">
+          <p class="ex-desc-variant desc-academia"><span class="loc-tag-label mono">Na academia</span>Com os ombros apoiados em um banco e uma barra ou halter sobre o quadril, eleve o quadril contraindo os glúteos no topo.</p>
+          <p class="ex-desc-variant desc-casa"><span class="loc-tag-label mono">Em casa</span>Com os ombros apoiados no chão e joelhos flexionados, eleve o quadril contraindo os glúteos no topo — sem carga ou com uma mochila sobre o quadril.</p>
+          <p><strong>Músculos secundários:</strong> posterior de coxa.</p>
+          <div class="table-scroll"><table class="sets mono"><thead><tr><th>Iniciante</th><th>Intermediário</th><th>Avançado</th></tr></thead>
+            <tbody><tr><td class="col-inic">3×12</td><td class="col-inter">4×15</td><td class="col-avan">4×15–20 com carga</td></tr></tbody></table></div>
+          <p class="ex-tip"><strong>Dica:</strong> pausa de 1–2s no topo com o glúteo bem contraído.</p>
+          <p class="ex-video"><a class="video-link" href="https://www.youtube.com/results?search_query=hip+thrust+elevacao+pelvica+execucao+correta" target="_blank" rel="noopener">▶ Ver demonstração no YouTube ↗</a></p>
+        </div>
+      </details>
+
+      <details class="exercise-card lvl-iniciante lvl-intermediario lvl-avancado loc-casa loc-academia">
+        <summary><span class="ex-name">Elevação de panturrilha</span>
+          <span class="ex-tags"><span class="tag loc-casa">Casa</span><span class="tag loc-academia">Academia</span><span class="tag primary">Panturrilha</span></span></summary>
+        <div class="ex-body">
+          <p>De pé, eleve os calcanhares o máximo possível e desça controlado. Pode ser feito em um degrau para ganhar amplitude.</p>
+          <p><strong>Músculos secundários:</strong> —</p>
+          <div class="table-scroll"><table class="sets mono"><thead><tr><th>Iniciante</th><th>Intermediário</th><th>Avançado</th></tr></thead>
+            <tbody><tr><td class="col-inic">3×15</td><td class="col-inter">4×15–20</td><td class="col-avan">4×20+ com carga</td></tr></tbody></table></div>
+          <p class="ex-tip"><strong>Dica:</strong> pausa de 1s no topo — a panturrilha responde bem a isso.</p>
+          <p class="ex-video"><a class="video-link" href="https://www.youtube.com/results?search_query=elevacao+de+panturrilha+execucao+correta" target="_blank" rel="noopener">▶ Ver demonstração no YouTube ↗</a></p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<section id="core" class="muscle">
+  <div class="wrap">
+    <div class="section-head"><span class="section-num mono">06</span><h2>Core / Abdômen</h2></div>
+    <p class="group-intro">Reto abdominal, oblíquos e transverso — estabilizam a coluna em qualquer outro exercício, além de trabalharem sozinhos.</p>
+    <span class="rest-note">Descanso recomendado antes de treinar core de novo: <strong>24–48h</strong> (pode ser treinado com mais frequência)</span>
+    <div class="exercise-grid">
+
+      <details class="exercise-card lvl-iniciante lvl-intermediario lvl-avancado loc-casa loc-academia">
+        <summary><span class="ex-name">Prancha</span>
+          <span class="ex-tags"><span class="tag loc-casa">Casa</span><span class="tag loc-academia">Academia</span><span class="tag primary">Core</span></span></summary>
+        <div class="ex-body">
+          <p>Apoiado nos antebraços e nas pontas dos pés, mantenha o corpo em linha reta, sem deixar o quadril subir ou cair.</p>
+          <p><strong>Músculos secundários:</strong> ombros, glúteos.</p>
+          <div class="table-scroll"><table class="sets mono"><thead><tr><th>Iniciante</th><th>Intermediário</th><th>Avançado</th></tr></thead>
+            <tbody><tr><td class="col-inic">3×20–30s</td><td class="col-inter">3×45–60s</td><td class="col-avan">3×60–90s+</td></tr></tbody></table></div>
+          <p class="ex-tip"><strong>Dica:</strong> respire normalmente — não trave a respiração para "aguentar".</p>
+          <p class="ex-video"><a class="video-link" href="https://www.youtube.com/results?search_query=prancha+abdominal+execucao+correta" target="_blank" rel="noopener">▶ Ver demonstração no YouTube ↗</a></p>
+        </div>
+      </details>
+
+      <details class="exercise-card lvl-iniciante lvl-intermediario lvl-avancado loc-casa loc-academia">
+        <summary><span class="ex-name">Abdominal supra</span>
+          <span class="ex-tags"><span class="tag loc-casa">Casa</span><span class="tag loc-academia">Academia</span><span class="tag primary">Reto abdominal</span></span></summary>
+        <div class="ex-body">
+          <p>Deitado, joelhos flexionados, eleve o tronco contraindo o abdômen — não é preciso subir totalmente.</p>
+          <p><strong>Músculos secundários:</strong> flexores de quadril.</p>
+          <div class="table-scroll"><table class="sets mono"><thead><tr><th>Iniciante</th><th>Intermediário</th><th>Avançado</th></tr></thead>
+            <tbody><tr><td class="col-inic">3×12–15</td><td class="col-inter">4×15–20</td><td class="col-avan">4×20+ com peso no peito</td></tr></tbody></table></div>
+          <p class="ex-tip"><strong>Dica:</strong> não puxe o pescoço com as mãos — o movimento vem do abdômen.</p>
+          <p class="ex-video"><a class="video-link" href="https://www.youtube.com/results?search_query=abdominal+supra+execucao+correta" target="_blank" rel="noopener">▶ Ver demonstração no YouTube ↗</a></p>
+        </div>
+      </details>
+
+      <details class="exercise-card lvl-iniciante lvl-intermediario lvl-avancado loc-casa loc-academia">
+        <summary><span class="ex-name">Abdominal oblíquo (bicicleta)</span>
+          <span class="ex-tags"><span class="tag loc-casa">Casa</span><span class="tag loc-academia">Academia</span><span class="tag primary">Oblíquos</span></span></summary>
+        <div class="ex-body">
+          <p>Deitado, leve o cotovelo em direção ao joelho oposto, alternando os lados em um movimento de pedalada.</p>
+          <p><strong>Músculos secundários:</strong> reto abdominal.</p>
+          <div class="table-scroll"><table class="sets mono"><thead><tr><th>Iniciante</th><th>Intermediário</th><th>Avançado</th></tr></thead>
+            <tbody><tr><td class="col-inic">3×10 por lado</td><td class="col-inter">4×15 por lado</td><td class="col-avan">4×20 por lado</td></tr></tbody></table></div>
+          <p class="ex-tip"><strong>Dica:</strong> movimento controlado — velocidade não substitui contração.</p>
+          <p class="ex-video"><a class="video-link" href="https://www.youtube.com/results?search_query=abdominal+bicicleta+obliquo+execucao+correta" target="_blank" rel="noopener">▶ Ver demonstração no YouTube ↗</a></p>
+        </div>
+      </details>
+
+      <details class="exercise-card lvl-iniciante lvl-intermediario lvl-avancado loc-casa loc-academia">
+        <summary><span class="ex-name">Elevação de pernas</span>
+          <span class="ex-tags"><span class="tag loc-casa">Casa</span><span class="tag loc-academia">Academia</span><span class="tag primary">Reto abdominal inferior</span></span></summary>
+        <div class="ex-body">
+          <p>Deitado ou pendurado em uma barra, eleve as pernas estendidas (ou flexionadas, para facilitar) até a altura do quadril.</p>
+          <p><strong>Músculos secundários:</strong> flexores de quadril.</p>
+          <div class="table-scroll"><table class="sets mono"><thead><tr><th>Iniciante</th><th>Intermediário</th><th>Avançado</th></tr></thead>
+            <tbody><tr><td class="col-inic">3×8–10 (joelhos flexionados)</td><td class="col-inter">4×12–15</td><td class="col-avan">4×15+ pernas estendidas</td></tr></tbody></table></div>
+          <p class="ex-tip"><strong>Dica:</strong> lombar pressionada contra o chão (ou sem balançar, se pendurado).</p>
+          <p class="ex-video"><a class="video-link" href="https://www.youtube.com/results?search_query=elevacao+de+pernas+abdominal+execucao+correta" target="_blank" rel="noopener">▶ Ver demonstração no YouTube ↗</a></p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<section id="plano-alimentar" class="diet">
+  <div class="wrap">
+    <div class="section-head"><span class="section-num mono">07</span><h2>Plano alimentar</h2></div>
+    <p class="group-intro">Orientação geral por objetivo. Selecione um objetivo na barra de filtros para focar em um único plano — sem selecionar, veja os três lado a lado.</p>
+    <div class="diet-grid">
+      <article class="diet-panel diet-hipertrofia">
+        <h3>Hipertrofia (ganho de massa)</h3>
+        <p class="diet-balance mono">SUPERÁVIT CALÓRICO ~10–15%</p>
+        <p><strong>Proteína:</strong> 1,8–2,2 g/kg/dia — frango, ovos, carnes magras, peixe, whey, iogurte grego, leguminosas.</p>
+        <p><strong>Carboidratos:</strong> moderados a altos, priorizando arroz, batata-doce, aveia e frutas — concentrados antes/depois do treino para repor energia e sustentar o volume.</p>
+        <p><strong>Gorduras boas:</strong> azeite, abacate, castanhas, ovos.</p>
+        <p><strong>Evitar:</strong> déficit calórico prolongado e substituir refeições principais por ultraprocessados.</p>
+      </article>
+      <article class="diet-panel diet-perda">
+        <h3>Perda de peso</h3>
+        <p class="diet-balance mono">DÉFICIT CALÓRICO ~15–20%</p>
+        <p><strong>Proteína:</strong> 1,8–2,4 g/kg/dia (mais alta, para preservar massa muscular e saciedade) — frango, peixe, claras, iogurte grego, whey, leguminosas.</p>
+        <p><strong>Carboidratos:</strong> priorize baixo índice glicêmico e fibra — vegetais, aveia, quinoa, feijão — ajustando a quantidade total ao déficit.</p>
+        <p><strong>Gorduras boas:</strong> azeite, abacate, castanhas, com moderação.</p>
+        <p><strong>Evitar:</strong> refrigerantes, frituras, açúcar refinado e déficits muito agressivos — eles aumentam o risco de perder massa muscular.</p>
+      </article>
+      <article class="diet-panel diet-qualidade">
+        <h3>Qualidade de vida</h3>
+        <p class="diet-balance mono">MANUTENÇÃO CALÓRICA</p>
+        <p><strong>Proteína:</strong> 1,2–1,6 g/kg/dia — variedade de fontes animais e vegetais.</p>
+        <p><strong>Carboidratos:</strong> integrais e variados — arroz integral, frutas, tubérculos, grãos — sem necessidade de restrição rígida.</p>
+        <p><strong>Gorduras boas:</strong> azeite, peixes, castanhas, com moderação.</p>
+        <p><strong>Evitar:</strong> excesso de ultraprocessados e álcool — priorize regularidade e variedade acima de regras rígidas.</p>
+      </article>
+    </div>
+    <p class="disclaimer">Hidrate-se bem e distribua a proteína ao longo do dia. <strong>Aviso:</strong> orientação geral e educativa — não substitui acompanhamento de um nutricionista, especialmente em casos de restrições alimentares ou condições de saúde.</p>
+  </div>
+</section>
+
+<section id="guia" class="guide">
+  <div class="wrap">
+    <div class="section-head"><span class="section-num mono">08</span><h2>Guia rápido</h2></div>
+    <div class="guide-grid">
+      <article><h3>Frequência recomendada</h3><p>Iniciante: 2–3x/semana em corpo inteiro. Intermediário: 4x/semana em superior/inferior. Avançado: 5–6x/semana em push/pull/legs.</p></article>
+      <article><h3>Descanso entre o mesmo grupo</h3><p>Mínimo de 48h antes de treinar o mesmo músculo de novo. Grupos grandes como pernas e costas se beneficiam de até 72h.</p></article>
+      <article><h3>Progressão de carga</h3><p>Aumente peso ou repetições gradualmente quando conseguir completar todas as séries com boa técnica — essa <span class="term" tabindex="0">sobrecarga progressiva<span class="tip" role="tooltip">Aumento gradual de carga, repetições ou volume ao longo do tempo — o motor de todo progresso.</span></span> é o que constrói força e músculo.</p></article>
+      <article><h3>Aquecimento</h3><p>5–10 minutos de mobilidade articular, seguidos de 1–2 séries de aquecimento com carga leve antes das séries principais.</p></article>
+      <article><h3>Descanso entre séries, por nível e objetivo</h3><p>Hipertrofia: 60–90s. Perda de peso: 20–40s (ou monte supersets). Qualidade de vida: 60–90s. Em qualquer objetivo, iniciantes ficam no topo da faixa (mais recuperação, foco em técnica) e avançados no mínimo (mais densidade de treino).</p></article>
+      <article><h3>Sono, nutrição e hidratação</h3><p>7–9h de sono e boa hidratação são tão importantes quanto o treino — veja o <a href="#plano-alimentar">plano alimentar</a> por objetivo.</p></article>
+      <article><h3>Sinais de treino em excesso</h3><p>Dor persistente, queda de performance e fadiga constante indicam que é hora de reduzir volume ou descansar mais.</p></article>
+    </div>
+
+    <p class="tooltip-hint">Termos técnicos como <span class="term" tabindex="0">superset<span class="tip" role="tooltip">Dois exercícios feitos em sequência, sem descanso entre eles.</span></span> ou <span class="term" tabindex="0">rest-pause<span class="tip" role="tooltip">Pausa curta de 10–20s dentro da mesma série para conseguir mais repetições.</span></span> aparecem sublinhados e pontilhados — toque ou passe o mouse para ver a definição, direto onde são usados.</p>
+
+    <p class="disclaimer"><strong>Aviso:</strong> este guia tem fins educativos e não substitui a avaliação de um profissional de educação física ou médico. Consulte um especialista antes de iniciar, especialmente se tiver condições de saúde pré-existentes.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">Plano de treino — casa &amp; academia · uso pessoal e educativo.</div>
+</footer>
+
+</body>
+</html>

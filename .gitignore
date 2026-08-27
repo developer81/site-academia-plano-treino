@@ -1,0 +1,6 @@
+# Environment variables
+.env
+
+# Third-party skill installs (reproducible via `npx skills add`, see skills-lock.json)
+.agents/
+.claude/
